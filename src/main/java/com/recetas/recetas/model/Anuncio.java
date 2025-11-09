@@ -12,10 +12,10 @@ public class Anuncio {
     @SequenceGenerator(name = "anuncios_seq", sequenceName = "anuncios_seq", allocationSize = 1)
     private Long id;
     
-    @Column(nullable = false, length = 200)
+    @Column(name = "empresa", nullable = false, length = 200)
     private String empresa;
     
-    @Column(nullable = false, length = 200)
+    @Column(name = "titulo", nullable = false, length = 200)
     private String titulo;
     
     @Column(name = "descripcion", columnDefinition = "CLOB")

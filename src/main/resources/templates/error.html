@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Recetas del Mundo</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        .error-container {
+            text-align: center;
+            padding: 50px 20px;
+            max-width: 600px;
+            margin: 100px auto;
+        }
+        .error-code {
+            font-size: 72px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+        .error-message {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .error-description {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 40px;
+        }
+        .btn-home {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .btn-home:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-code" th:text="${errorCode != null ? errorCode : '500'}">500</div>
+        <div class="error-message" th:text="${errorMessage != null ? errorMessage : 'Ha ocurrido un error'}">
+            Ha ocurrido un error
+        </div>
+        <div class="error-description">
+            Lo sentimos, algo salió mal. Por favor, intenta nuevamente o regresa a la página de inicio.
+        </div>
+        <a th:href="@{/inicio}" class="btn-home">🏠 Ir al Inicio</a>
+    </div>
+</body>
+</html>
+

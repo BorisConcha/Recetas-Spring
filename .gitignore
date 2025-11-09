@@ -1,33 +1,107 @@
-HELP.md
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+replay_pid*
+
+# Maven
 target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
 .mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
 
-### STS ###
-.apt_generated
+# Eclipse
 .classpath
-.factorypath
 .project
-.settings
-.springBeans
-.sts4-cache
+.settings/
+bin/
 
-### IntelliJ IDEA ###
-.idea
+# IntelliJ IDEA
+.idea/
 *.iws
 *.iml
 *.ipr
+out/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+# NetBeans
+nbproject/private/
 build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
 
-### VS Code ###
+# VS Code
 .vscode/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# SECURITY: Credenciales y configuración sensible
+# OWASP A02:2021 - Cryptographic Failures
+.env
+*.env
+application-prod.properties
+application-local.properties
+*-secret.properties
+
+# SECURITY: Wallets y certificados de base de datos
+Wallet_*/
+*.jks
+*.keystore
+*.p12
+*.pem
+*.key
+
+# SECURITY: Logs que pueden contener información sensible
+logs/
+*.log.*
+*.log.gz
+
+# SECURITY: Backups que pueden contener datos sensibles
+*.bak
+*.backup
+*.sql.gz
+*.dump
+
+# ZAP Reports (opcional - comentar si quieres incluir en Git)
+# documentacion/zap_reports/*.html
+# documentacion/zap_reports/*.json
+# documentacion/zap_reports/*.xml
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*~
+documentacion/
