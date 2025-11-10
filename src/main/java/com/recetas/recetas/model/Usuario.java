@@ -33,7 +33,7 @@ public class Usuario {
     )
     private Set<Role> roles;
 
-        public boolean isEnabled() {
+    public boolean isEnabled() {
         return enabled != null && enabled == 1;
     }
     

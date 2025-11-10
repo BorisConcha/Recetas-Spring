@@ -20,6 +20,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/", "/inicio", "/buscar", "/css/**", "/js/**", "/images/**", "/error").permitAll()
+                .requestMatchers("/login", "/login/**").permitAll()
                 .requestMatchers("/recetas/**").authenticated()
                 .anyRequest().authenticated()
             )
@@ -27,6 +28,8 @@ public class SecurityConfig {
             .formLogin(form -> form
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
+                .usernameParameter("username")
+                .passwordParameter("password")
                 .defaultSuccessUrl("/inicio", true)
                 .failureUrl("/login?error=true")
                 .permitAll()
@@ -34,7 +37,7 @@ public class SecurityConfig {
             
             .logout(logout -> logout
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/inicio")
+                .logoutSuccessUrl("/inicio?logout=true")
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
                 .permitAll()
