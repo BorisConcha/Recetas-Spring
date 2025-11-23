@@ -12,6 +12,9 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usuarios_seq")
     @SequenceGenerator(name = "usuarios_seq", sequenceName = "usuarios_seq", allocationSize = 1)
     private Long id;
+
+    @Column(name = "nombre_completo", nullable = false, length = 200)
+    private String nombreCompleto;
     
     @Column(name = "username", unique = true, nullable = false, length = 50)
     private String username;
@@ -19,7 +22,7 @@ public class Usuario {
     @Column(name = "password", nullable = false, length = 255)
     private String password;
     
-    @Column(name = "email", nullable = false, length = 100)
+    @Column(name = "email", unique = true, nullable = false, length = 100)
     private String email;
     
     @Column(name = "enabled", nullable = false)
