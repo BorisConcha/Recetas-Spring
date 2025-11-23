@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${receta.nombre} + ' - Recetas del Mundo'">Detalle Receta</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
+    <input type="hidden" id="receta-id" th:value="${receta.id}">
     <header>
         <nav class="navbar">
             <div class="container">
@@ -94,12 +96,95 @@
                 </div>
             </div>
 
+    
+            <div class="detalle-valoraciones" sec:authorize="isAuthenticated()">
+                <h2>⭐ Valorar esta Receta</h2>
+                <div class="valoracion-container">
+                    <div id="contenedor-estrellas" class="estrellas-container">
+                        <span class="estrella" data-puntuacion="1">★</span>
+                        <span class="estrella" data-puntuacion="2">★</span>
+                        <span class="estrella" data-puntuacion="3">★</span>
+                        <span class="estrella" data-puntuacion="4">★</span>
+                        <span class="estrella" data-puntuacion="5">★</span>
+                    </div>
+                    <div class="valoracion-info">
+                        <p>Promedio: <span id="valoracion-promedio">0.0</span> / 5.0</p>
+                        <p>Total valoraciones: <span id="valoracion-total">0</span></p>
+                        <input type="hidden" id="valoracion-usuario" value="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="detalle-comentarios" sec:authorize="isAuthenticated()">
+                <h2>💬 Comentarios</h2>
+                
+                <form id="form-comentario" class="form-comentario">
+                    <div class="form-group">
+                        <textarea id="comentario-texto" 
+                                  placeholder="Escribe tu comentario aquí..." 
+                                  rows="4" 
+                                  required></textarea>
+                    </div>
+                    <button type="submit" class="btn-comentar">Comentar</button>
+                </form>
+                
+                <div id="lista-comentarios" class="lista-comentarios">
+                    <p>Cargando comentarios...</p>
+                </div>
+            </div>
+
+            <div class="detalle-fotos" sec:authorize="isAuthenticated()">
+                <h2>📷 Fotos</h2>
+                
+                <div class="upload-container">
+                    <input type="file" id="input-foto" accept="image/*" style="display: none;">
+                    <label for="input-foto" class="btn-upload">📤 Subir Foto</label>
+                </div>
+                
+                <div id="galeria-fotos" class="galeria-fotos">
+                    <p>Cargando fotos...</p>
+                </div>
+            </div>
+
+            <div class="detalle-videos" sec:authorize="isAuthenticated()">
+                <h2>🎥 Videos</h2>
+                
+                <div class="upload-container">
+                    <input type="file" id="input-video" accept="video/*" style="display: none;">
+                    <label for="input-video" class="btn-upload">📤 Subir Video</label>
+                </div>
+                
+                <div id="galeria-videos" class="galeria-videos">
+                    <p>Cargando videos...</p>
+                </div>
+            </div>
+
+            <div class="detalle-compartir" sec:authorize="isAuthenticated()">
+                <h2>🔗 Compartir Receta</h2>
+                <div class="compartir-botones">
+                    <button id="btn-compartir-facebook" class="btn-compartir btn-facebook">
+                        📘 Facebook
+                    </button>
+                    <button id="btn-compartir-twitter" class="btn-compartir btn-twitter">
+                        🐦 Twitter
+                    </button>
+                    <button id="btn-compartir-whatsapp" class="btn-compartir btn-whatsapp">
+                        💬 WhatsApp
+                    </button>
+                    <button id="btn-copiar-link" class="btn-compartir btn-link">
+                        📋 Copiar Link
+                    </button>
+                </div>
+            </div>
+
             <div class="detalle-acciones">
                 <a th:href="@{/buscar}" class="btn-volver">← Volver a Buscar</a>
                 <a th:href="@{/inicio}" class="btn-inicio">Ir al Inicio</a>
             </div>
         </div>
     </main>
+
+    <script th:src="@{/js/receta-detalle.js}"></script>
 
     <footer>
         <div class="container">
