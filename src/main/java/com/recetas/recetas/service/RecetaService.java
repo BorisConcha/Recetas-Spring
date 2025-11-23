@@ -10,7 +10,7 @@ import java.util.Optional;
 @Service
 public class RecetaService {
     
-        @Autowired
+    @Autowired
     private RecetaRepository recetaRepository;
 
     public List<Receta> obtenerRecetasRecientes() {
@@ -47,5 +47,9 @@ public class RecetaService {
 
     public List<Receta> obtenerTodasLasRecetas() {
         return recetaRepository.findAll();
+    }
+
+    public Receta guardarReceta(Receta receta) {
+        return recetaRepository.save(receta);
     }
 }
