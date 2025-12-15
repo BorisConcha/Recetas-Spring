@@ -1,6 +1,5 @@
 package com.recetas.recetas.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.recetas.recetas.dto.ComentarioRequest;
 import com.recetas.recetas.dto.ComentarioResponse;
 import com.recetas.recetas.model.Usuario;

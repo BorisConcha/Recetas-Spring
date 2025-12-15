@@ -28,10 +28,8 @@ class PasswordHashGeneratorTest {
         String hash1 = encoder.encode(password);
         String hash2 = encoder.encode(password);
         
-        // Los hashes deben ser diferentes debido al salt aleatorio
         assertNotEquals(hash1, hash2);
         
-        // Pero ambos deben validar la misma contraseña
         assertTrue(encoder.matches(password, hash1));
         assertTrue(encoder.matches(password, hash2));
     }
@@ -54,7 +52,6 @@ class PasswordHashGeneratorTest {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
         String hash = encoder.encode("test");
         
-        // BCrypt hash debe tener formato específico
         assertNotNull(hash);
         assertTrue(hash.length() >= 60);
         assertTrue(hash.startsWith("$2a$") || hash.startsWith("$2b$"));
@@ -62,10 +59,8 @@ class PasswordHashGeneratorTest {
 
     @Test
     void testPasswordHashGeneratorLogic() {
-        // Simular la lógica del main sin ejecutarlo
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
         
-        // Contraseñas de prueba del main
         String[] passwords = {"admin123", "chef123", "usuario123"};
         
         for (String password : passwords) {
@@ -79,7 +74,6 @@ class PasswordHashGeneratorTest {
     void testHashVerificationLogic() {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
         
-        // Simular verificación de hash en BD
         String hashEnBD = "$2a$12$LQv3c1yqBMVHxkd0LHAkCOYz6TtxMQJqhN8/LewI5gyg.TT4TkVOe";
         String[] testPasswords = {
             "admin123", "admin", "password", "12345678", 
@@ -88,7 +82,6 @@ class PasswordHashGeneratorTest {
         
         for (String testPwd : testPasswords) {
             boolean matches = encoder.matches(testPwd, hashEnBD);
-            // Al menos uno debería hacer match o ninguno, pero el método debe ejecutarse
             assertNotNull(Boolean.valueOf(matches));
         }
     }
@@ -97,14 +90,12 @@ class PasswordHashGeneratorTest {
     void testSQLScriptGenerationLogic() {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
         
-        // Simular generación de scripts SQL
         String[] usernames = {"admin", "chef", "usuario"};
         String[] passwords = {"admin123", "chef123", "usuario123"};
         
         for (int i = 0; i < usernames.length; i++) {
             String hash = encoder.encode(passwords[i]);
             assertNotNull(hash);
-            // Verificar que el hash puede usarse en SQL
             assertFalse(hash.contains("'"));
             assertTrue(encoder.matches(passwords[i], hash));
         }
@@ -112,10 +103,8 @@ class PasswordHashGeneratorTest {
 
     @Test
     void testPasswordHashGeneratorMainMethodLogic() {
-        // Simular toda la lógica del método main sin ejecutarlo
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
         
-        // Simular la sección de generación de hashes
         String[] passwords = {"admin123", "chef123", "usuario123"};
         for (String password : passwords) {
             String hash = encoder.encode(password);
@@ -123,7 +112,6 @@ class PasswordHashGeneratorTest {
             assertTrue(encoder.matches(password, hash));
         }
         
-        // Simular la sección de verificación de hash en BD
         String hashEnBD = "$2a$12$LQv3c1yqBMVHxkd0LHAkCOYz6TtxMQJqhN8/LewI5gyg.TT4TkVOe";
         String[] testPasswords = {
             "admin123", "admin", "password", "12345678", 
@@ -134,7 +122,6 @@ class PasswordHashGeneratorTest {
             assertNotNull(Boolean.valueOf(matches));
         }
         
-        // Simular la sección de generación de scripts SQL
         String[] usernames = {"admin", "chef", "usuario"};
         for (int i = 0; i < usernames.length; i++) {
             String hash = encoder.encode(passwords[i]);

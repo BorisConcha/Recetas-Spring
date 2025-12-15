@@ -84,27 +84,21 @@ class JwtServiceTest {
 
     @Test
     void testValidateToken_ExpiredToken() {
-        // Crear un token con expiración muy corta
         ReflectionTestUtils.setField(jwtService, "expiration", 1L);
         String token = jwtService.generateToken(userDetails);
         
-        // Restaurar expiration para futuras pruebas
         ReflectionTestUtils.setField(jwtService, "expiration", 86400000L);
         
-        // Esperar para que el token expire
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
         
-        // El token debería estar expirado, pero puede fallar la validación antes
-        // Simplemente verificamos que el método se ejecuta sin excepción
         try {
             boolean isValid = jwtService.validateToken(token, userDetails);
             assertFalse(isValid);
         } catch (Exception e) {
-            // Si lanza excepción por token expirado, también es válido
             assertTrue(e.getMessage().contains("expired") || e.getMessage().contains("JWT"));
         }
     }
@@ -162,7 +156,6 @@ class JwtServiceTest {
     void testValidateToken_MultipleValidations() {
         String token = jwtService.generateToken(userDetails);
         
-        // Validar múltiples veces el mismo token
         assertTrue(jwtService.validateToken(token, userDetails));
         assertTrue(jwtService.validateToken(token, userDetails));
     }

@@ -93,11 +93,9 @@ class SecurityConfigTest {
         PasswordEncoder encoder1 = securityConfig.passwordEncoder();
         PasswordEncoder encoder2 = securityConfig.passwordEncoder();
         
-        // Verificar que cada llamada retorna una nueva instancia o la misma
         assertNotNull(encoder1);
         assertNotNull(encoder2);
         
-        // Verificar que ambos funcionan correctamente
         String password = "test123";
         String hash1 = encoder1.encode(password);
         String hash2 = encoder2.encode(password);

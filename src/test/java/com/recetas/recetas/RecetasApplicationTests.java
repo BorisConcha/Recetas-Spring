@@ -14,7 +14,6 @@ class RecetasApplicationTests {
 
 	@Test
 	void testRecetasApplicationMainMethodExists() throws Exception {
-		// Verificar que el método main existe
 		RecetasApplication.class.getMethod("main", String[].class);
 		assertTrue(true);
 	}

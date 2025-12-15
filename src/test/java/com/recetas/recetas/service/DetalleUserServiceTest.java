@@ -82,7 +82,7 @@ class DetalleUserServiceTest {
         UserDetails userDetails = detalleUserService.loadUserByUsername("testuser");
 
         assertNotNull(userDetails);
-        assertFalse(userDetails.getAuthorities().isEmpty()); // Debe tener ROLE_USER por defecto
+        assertFalse(userDetails.getAuthorities().isEmpty());
         verify(usuarioRepository).findByUsername("testuser");
     }
 
@@ -212,7 +212,6 @@ class DetalleUserServiceTest {
 
     @Test
     void testLoadUserByUsername_WithRolesNotEmpty() {
-        // Test para cubrir el bloque else que imprime información de roles
         when(usuarioRepository.findByUsername("testuser")).thenReturn(Optional.of(usuario));
 
         UserDetails userDetails = detalleUserService.loadUserByUsername("testuser");

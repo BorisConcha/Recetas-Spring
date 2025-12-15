@@ -140,7 +140,6 @@ class JwtAuthenticationFilterTest {
         when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
         when(jwtService.extractUsername(token)).thenReturn("testuser");
         
-        // Simular que ya hay una autenticación en el contexto
         org.springframework.security.core.context.SecurityContext context = 
             org.springframework.security.core.context.SecurityContextHolder.getContext();
         context.setAuthentication(mock(org.springframework.security.core.Authentication.class));
@@ -151,7 +150,6 @@ class JwtAuthenticationFilterTest {
         verify(userDetailsService, never()).loadUserByUsername(any());
         verify(filterChain).doFilter(request, response);
         
-        // Limpiar el contexto
         SecurityContextHolder.clearContext();
     }
 
