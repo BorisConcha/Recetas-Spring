@@ -179,6 +179,13 @@
 						</configuration>
 					</execution>
 					<execution>
+            			<id>report-aggregate</id>
+            			<phase>verify</phase>
+            			<goals>
+            			    <goal>report-aggregate</goal>
+            			</goals>
+        			</execution>
+					<execution>
 						<id>jacoco-check</id>
 						<goals>
 							<goal>check</goal>
