@@ -1,5 +1,6 @@
 package com.recetas.recetas.dto;
 
+import com.recetas.recetas.util.PasswordValidator;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -20,8 +21,16 @@ public class RegistroRequest {
     private String email;
     
     @NotBlank(message = "La contraseña es obligatoria")
-    @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
+    @Size(min = 8, max = 50, message = "La contraseña debe tener entre 8 y 50 caracteres")
     private String password;
+    
+    /**
+     * Valida la contraseña usando PasswordValidator
+     * @return ValidationResult con los errores si los hay
+     */
+    public PasswordValidator.ValidationResult validatePassword() {
+        return PasswordValidator.validate(this.password);
+    }
     
     public RegistroRequest() {
     }

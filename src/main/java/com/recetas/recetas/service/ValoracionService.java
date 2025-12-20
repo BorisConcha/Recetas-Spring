@@ -37,13 +37,11 @@ public class ValoracionService {
         Optional<Valoracion> valoracionExistente = valoracionRepository.findByRecetaIdAndUsuarioId(recetaId, usuarioId);
         
         if (valoracionExistente.isPresent()) {
-            // Actualizar valoración existente
             Valoracion valoracion = valoracionExistente.get();
             valoracion.setPuntuacion(puntuacion);
             valoracion.setFechaActualizacion(LocalDateTime.now());
             return valoracionRepository.save(valoracion);
         } else {
-            // Crear nueva valoración
             Valoracion valoracion = new Valoracion();
             valoracion.setReceta(receta);
             valoracion.setUsuario(usuario);
