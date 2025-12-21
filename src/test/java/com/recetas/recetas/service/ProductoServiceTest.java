@@ -120,5 +120,61 @@ class ProductoServiceTest {
         verify(productoRepository, times(1)).findById(999L);
         verify(productoRepository, never()).save(any());
     }
+    
+    @Test
+    void testObtenerProductosRecientes() {
+        List<Producto> productos = Arrays.asList(producto);
+        when(productoRepository.findProductosActivosRecientes()).thenReturn(productos);
+        
+        List<Producto> resultado = productoService.obtenerProductosRecientes();
+        
+        assertNotNull(resultado);
+        assertEquals(1, resultado.size());
+        verify(productoRepository, times(1)).findProductosActivosRecientes();
+    }
+    
+    @Test
+    void testObtenerProductoActivoPorId() {
+        when(productoRepository.findByIdAndActivo(1L, 1)).thenReturn(Optional.of(producto));
+        
+        Optional<Producto> resultado = productoService.obtenerProductoActivoPorId(1L);
+        
+        assertTrue(resultado.isPresent());
+        assertEquals("Laptop HP", resultado.get().getNombre());
+        verify(productoRepository, times(1)).findByIdAndActivo(1L, 1);
+    }
+    
+    @Test
+    void testObtenerProductoActivoPorIdNoEncontrado() {
+        when(productoRepository.findByIdAndActivo(999L, 1)).thenReturn(Optional.empty());
+        
+        Optional<Producto> resultado = productoService.obtenerProductoActivoPorId(999L);
+        
+        assertFalse(resultado.isPresent());
+        verify(productoRepository, times(1)).findByIdAndActivo(999L, 1);
+    }
+    
+    @Test
+    void testObtenerProductosPorCategoria() {
+        List<Producto> productos = Arrays.asList(producto);
+        when(productoRepository.findByCategoriaAndActivo("Electrónica", 1)).thenReturn(productos);
+        
+        List<Producto> resultado = productoService.obtenerProductosPorCategoria("Electrónica");
+        
+        assertNotNull(resultado);
+        assertEquals(1, resultado.size());
+        verify(productoRepository, times(1)).findByCategoriaAndActivo("Electrónica", 1);
+    }
+    
+    @Test
+    void testActualizarProducto() {
+        when(productoRepository.save(any(Producto.class))).thenReturn(producto);
+        
+        Producto resultado = productoService.actualizarProducto(producto);
+        
+        assertNotNull(resultado);
+        assertEquals("Laptop HP", resultado.getNombre());
+        verify(productoRepository, times(1)).save(producto);
+    }
 }
 

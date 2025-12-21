@@ -122,6 +122,49 @@ class BuscarControllerTest {
         assertEquals("buscar", viewName);
         verify(recetaService).obtenerTodasLasRecetas();
     }
+    
+    @Test
+    void testBuscar_InputConDrop() {
+        // Input con "drop" debe ser rechazado por isValidInput, no se llama ningún servicio
+        buscarController.buscar("drop", null, null, null, null, model);
+        verify(recetaService, never()).buscarPorNombre(any());
+        verify(recetaService, never()).obtenerTodasLasRecetas();
+    }
+    
+    @Test
+    void testBuscar_InputConInsert() {
+        // Input con "insert" debe ser rechazado
+        buscarController.buscar("insert", null, null, null, null, model);
+        verify(recetaService, never()).buscarPorNombre(any());
+    }
+    
+    @Test
+    void testBuscar_InputConUpdate() {
+        // Input con "update" debe ser rechazado
+        buscarController.buscar("update", null, null, null, null, model);
+        verify(recetaService, never()).buscarPorNombre(any());
+    }
+    
+    @Test
+    void testBuscar_InputConDelete() {
+        // Input con "delete" debe ser rechazado
+        buscarController.buscar("delete", null, null, null, null, model);
+        verify(recetaService, never()).buscarPorNombre(any());
+    }
+    
+    @Test
+    void testBuscar_InputConExec() {
+        // Input con "exec" debe ser rechazado
+        buscarController.buscar("exec", null, null, null, null, model);
+        verify(recetaService, never()).buscarPorNombre(any());
+    }
+    
+    @Test
+    void testBuscar_InputConUnion() {
+        // Input con "union" debe ser rechazado
+        buscarController.buscar("union", null, null, null, null, model);
+        verify(recetaService, never()).buscarPorNombre(any());
+    }
 
 }
 

@@ -155,5 +155,119 @@ class PedidoServiceTest {
         assertEquals("CANCELADO", pedido.getEstado());
         verify(pedidoRepository, times(1)).save(pedido);
     }
+    
+    @Test
+    void testCancelarPedidoYaCancelado() {
+        pedido.setEstado("CANCELADO");
+        
+        when(pedidoRepository.findById(1L)).thenReturn(Optional.of(pedido));
+        
+        pedidoService.cancelarPedido(1L);
+        
+        // No debe restaurar stock ni cambiar estado
+        verify(detallePedidoRepository, never()).findByPedido(any());
+        verify(pedidoRepository, never()).save(any());
+    }
+    
+    @Test
+    void testCancelarPedidoYaEntregado() {
+        pedido.setEstado("ENTREGADO");
+        
+        when(pedidoRepository.findById(1L)).thenReturn(Optional.of(pedido));
+        
+        pedidoService.cancelarPedido(1L);
+        
+        // No debe restaurar stock ni cambiar estado
+        verify(detallePedidoRepository, never()).findByPedido(any());
+        verify(pedidoRepository, never()).save(any());
+    }
+    
+    @Test
+    void testCancelarPedidoNoEncontrado() {
+        when(pedidoRepository.findById(999L)).thenReturn(Optional.empty());
+        
+        pedidoService.cancelarPedido(999L);
+        
+        verify(pedidoRepository, never()).save(any());
+    }
+    
+    @Test
+    void testObtenerTodosLosPedidos() {
+        List<Pedido> pedidos = Arrays.asList(pedido);
+        when(pedidoRepository.findAll()).thenReturn(pedidos);
+        
+        List<Pedido> resultado = pedidoService.obtenerTodosLosPedidos();
+        
+        assertNotNull(resultado);
+        assertEquals(1, resultado.size());
+        verify(pedidoRepository, times(1)).findAll();
+    }
+    
+    @Test
+    void testObtenerPedidosPorEstado() {
+        List<Pedido> pedidos = Arrays.asList(pedido);
+        when(pedidoRepository.findByEstado("PENDIENTE")).thenReturn(pedidos);
+        
+        List<Pedido> resultado = pedidoService.obtenerPedidosPorEstado("PENDIENTE");
+        
+        assertNotNull(resultado);
+        assertEquals(1, resultado.size());
+        verify(pedidoRepository, times(1)).findByEstado("PENDIENTE");
+    }
+    
+    @Test
+    void testCrearPedidoProductoNoDisponible() {
+        producto.setActivoBoolean(false);
+        Set<DetallePedido> detalles = new HashSet<>();
+        detalles.add(detallePedido);
+        
+        when(productoRepository.findById(1L)).thenReturn(Optional.of(producto));
+        
+        assertThrows(RuntimeException.class, () -> {
+            pedidoService.crearPedido(pedido, detalles);
+        });
+    }
+    
+    @Test
+    void testCrearPedidoProductoNoEncontrado() {
+        Set<DetallePedido> detalles = new HashSet<>();
+        detalles.add(detallePedido);
+        
+        when(productoRepository.findById(1L)).thenReturn(Optional.empty());
+        
+        Pedido resultado = pedidoService.crearPedido(pedido, detalles);
+        
+        // Debe crear el pedido pero sin detalles
+        verify(pedidoRepository, times(1)).save(pedido);
+    }
+    
+    @Test
+    void testCrearPedidoConMultiplesDetalles() {
+        Producto producto2 = new Producto();
+        producto2.setId(2L);
+        producto2.setPrecio(new BigDecimal("299.99"));
+        producto2.setStock(5);
+        producto2.setActivoBoolean(true);
+        
+        DetallePedido detalle2 = new DetallePedido();
+        detalle2.setProducto(producto2);
+        detalle2.setCantidad(1);
+        
+        Set<DetallePedido> detalles = new HashSet<>();
+        detalles.add(detallePedido);
+        detalles.add(detalle2);
+        
+        when(productoRepository.findById(1L)).thenReturn(Optional.of(producto));
+        when(productoRepository.findById(2L)).thenReturn(Optional.of(producto2));
+        when(pedidoRepository.save(any(Pedido.class))).thenReturn(pedido);
+        when(detallePedidoRepository.save(any(DetallePedido.class))).thenReturn(detallePedido);
+        when(productoRepository.save(any(Producto.class))).thenReturn(producto);
+        
+        Pedido resultado = pedidoService.crearPedido(pedido, detalles);
+        
+        assertNotNull(resultado);
+        verify(detallePedidoRepository, times(2)).save(any(DetallePedido.class));
+        verify(productoRepository, times(2)).save(any(Producto.class));
+    }
 }
 

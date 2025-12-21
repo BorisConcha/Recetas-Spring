@@ -61,17 +61,22 @@ class SecurityUtilTest {
 
         assertNull(username);
     }
-
+    
     @Test
-    void testGetCurrentUsername_AutenticacionNull() {
-        SecurityContext securityContext = mock(SecurityContext.class);
-        when(securityContext.getAuthentication()).thenReturn(null);
-
-        SecurityContextHolder.setContext(securityContext);
-
+    void testGetCurrentUsername_SecurityContextNull() {
+        SecurityContextHolder.clearContext();
+        
         String username = SecurityUtil.getCurrentUsername();
-
+        
+        // Cuando no hay contexto de seguridad, getAuthentication() retorna null
         assertNull(username);
+    }
+    
+    @Test
+    void testSecurityUtilConstructor() {
+        // Instanciar la clase para cubrir el constructor por defecto
+        SecurityUtil util = new SecurityUtil();
+        assertNotNull(util);
     }
 }
 

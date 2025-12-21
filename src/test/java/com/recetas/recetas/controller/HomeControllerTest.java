@@ -1,9 +1,9 @@
 package com.recetas.recetas.controller;
 
 import com.recetas.recetas.model.Anuncio;
-import com.recetas.recetas.model.Receta;
+import com.recetas.recetas.model.Producto;
 import com.recetas.recetas.service.AnuncioService;
-import com.recetas.recetas.service.RecetaService;
+import com.recetas.recetas.service.ProductoService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 class HomeControllerTest {
 
     @Mock
-    private RecetaService recetaService;
+    private ProductoService productoService;
 
     @Mock
     private AnuncioService anuncioService;
@@ -33,18 +33,18 @@ class HomeControllerTest {
     @InjectMocks
     private HomeController homeController;
 
-    private List<Receta> recetasRecientes;
-    private List<Receta> recetasPopulares;
+    private List<Producto> productosRecientes;
+    private List<Producto> productos;
     private List<Anuncio> anuncios;
 
     @BeforeEach
     void setUp() {
-        Receta receta = new Receta();
-        receta.setId(1L);
-        receta.setNombre("Receta Test");
+        Producto producto = new Producto();
+        producto.setId(1L);
+        producto.setNombre("Producto Test");
 
-        recetasRecientes = Arrays.asList(receta);
-        recetasPopulares = Arrays.asList(receta);
+        productosRecientes = Arrays.asList(producto);
+        productos = Arrays.asList(producto);
 
         Anuncio anuncio = new Anuncio();
         anuncio.setId(1L);
@@ -53,26 +53,43 @@ class HomeControllerTest {
 
     @Test
     void testInicio() {
-        when(recetaService.obtenerRecetasRecientes()).thenReturn(recetasRecientes);
-        when(recetaService.obtenerRecetasPopulares()).thenReturn(recetasPopulares);
+        when(productoService.obtenerProductosRecientes()).thenReturn(productosRecientes);
+        when(productoService.obtenerProductosActivos()).thenReturn(productos);
         when(anuncioService.obtenerAnunciosActivos()).thenReturn(anuncios);
 
         String viewName = homeController.inicio(model);
 
         assertEquals("inicio", viewName);
-        verify(recetaService).obtenerRecetasRecientes();
-        verify(recetaService).obtenerRecetasPopulares();
+        verify(productoService).obtenerProductosRecientes();
+        verify(productoService).obtenerProductosActivos();
         verify(anuncioService).obtenerAnunciosActivos();
-        verify(model).addAttribute("recetasRecientes", recetasRecientes);
-        verify(model).addAttribute("recetasPopulares", recetasPopulares);
+        verify(model).addAttribute("productosRecientes", productosRecientes);
+        verify(model).addAttribute("productos", productos);
         verify(model).addAttribute("anuncios", anuncios);
     }
 
     @Test
     void testLogin() {
         String viewName = homeController.login();
-
         assertEquals("login", viewName);
+    }
+    
+    @Test
+    void testRegistro() {
+        String viewName = homeController.registro();
+        assertEquals("registro", viewName);
+    }
+    
+    @Test
+    void testRecuperarPassword() {
+        String viewName = homeController.recuperarPassword();
+        assertEquals("recuperar-password", viewName);
+    }
+    
+    @Test
+    void testPerfil() {
+        String viewName = homeController.perfil();
+        assertEquals("perfil", viewName);
     }
 }
 

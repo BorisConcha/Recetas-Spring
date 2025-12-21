@@ -1,0 +1,112 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12 col-md-8 col-lg-6 mx-auto">
+      <h2 class="mb-4">Mi Perfil</h2>
+      
+      <div class="alert alert-danger" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+      
+      <div class="alert alert-success" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+      
+      <ul class="nav nav-tabs mb-4" id="profileTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" 
+                  id="datos-tab" 
+                  data-bs-toggle="tab" 
+                  data-bs-target="#datos" 
+                  type="button">
+            Datos Personales
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" 
+                  id="password-tab" 
+                  data-bs-toggle="tab" 
+                  data-bs-target="#password" 
+                  type="button">
+            Cambiar Contraseña
+          </button>
+        </li>
+      </ul>
+      
+      <div class="tab-content" id="profileTabsContent">
+        <div class="tab-pane fade show active" id="datos" role="tabpanel">
+          <form [formGroup]="perfilForm" (ngSubmit)="actualizarPerfil()">
+            <div class="mb-3">
+              <label for="nombreCompleto" class="form-label">Nombre Completo:</label>
+              <input type="text" 
+                     id="nombreCompleto" 
+                     class="form-control"
+                     formControlName="nombreCompleto"
+                     [class.is-invalid]="perfilForm.get('nombreCompleto')?.invalid && perfilForm.get('nombreCompleto')?.touched">
+              <div class="invalid-feedback" *ngIf="perfilForm.get('nombreCompleto')?.invalid && perfilForm.get('nombreCompleto')?.touched">
+                El nombre completo es obligatorio y debe tener entre 3 y 200 caracteres.
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="email" class="form-label">Email:</label>
+              <input type="email" 
+                     id="email" 
+                     class="form-control"
+                     formControlName="email"
+                     [class.is-invalid]="perfilForm.get('email')?.invalid && perfilForm.get('email')?.touched">
+              <div class="invalid-feedback" *ngIf="perfilForm.get('email')?.invalid && perfilForm.get('email')?.touched">
+                El email es obligatorio y debe tener un formato válido.
+              </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" [disabled]="perfilForm.invalid">
+              Actualizar Perfil
+            </button>
+          </form>
+        </div>
+        
+        <div class="tab-pane fade" id="password" role="tabpanel">
+          <form [formGroup]="passwordForm" (ngSubmit)="cambiarPassword()">
+            <div class="alert alert-danger" *ngIf="passwordErrors.length > 0">
+              <ul class="mb-0">
+                <li *ngFor="let error of passwordErrors">{{ error }}</li>
+              </ul>
+            </div>
+            
+            <div class="mb-3">
+              <label for="passwordActual" class="form-label">Contraseña Actual:</label>
+              <input type="password" 
+                     id="passwordActual" 
+                     class="form-control"
+                     formControlName="passwordActual"
+                     [class.is-invalid]="passwordForm.get('passwordActual')?.invalid && passwordForm.get('passwordActual')?.touched">
+              <div class="invalid-feedback" *ngIf="passwordForm.get('passwordActual')?.invalid && passwordForm.get('passwordActual')?.touched">
+                La contraseña actual es obligatoria.
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="nuevaPassword" class="form-label">Nueva Contraseña:</label>
+              <input type="password" 
+                     id="nuevaPassword" 
+                     class="form-control"
+                     formControlName="nuevaPassword"
+                     [class.is-invalid]="passwordForm.get('nuevaPassword')?.invalid && passwordForm.get('nuevaPassword')?.touched">
+              <small class="form-text text-muted">
+                La contraseña debe tener al menos 8 caracteres, incluir mayúsculas, minúsculas, números y caracteres especiales.
+              </small>
+              <div class="invalid-feedback" *ngIf="passwordForm.get('nuevaPassword')?.invalid && passwordForm.get('nuevaPassword')?.touched">
+                La nueva contraseña es obligatoria y debe tener entre 8 y 50 caracteres.
+              </div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" [disabled]="passwordForm.invalid">
+              Cambiar Contraseña
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

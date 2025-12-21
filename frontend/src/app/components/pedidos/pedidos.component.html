@@ -1,0 +1,65 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="mb-4">Mis Pedidos</h1>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="pedidos.length === 0">
+    <div class="col-12">
+      <div class="alert alert-info">
+        No tienes pedidos realizados.
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 mb-4" *ngFor="let pedido of pedidos">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between">
+          <h5>Pedido #{{ pedido.id }}</h5>
+          <span class="badge" 
+                [ngClass]="{
+                  'bg-warning': pedido.estado === 'PENDIENTE',
+                  'bg-info': pedido.estado === 'CONFIRMADO',
+                  'bg-primary': pedido.estado === 'ENVIADO',
+                  'bg-success': pedido.estado === 'ENTREGADO',
+                  'bg-danger': pedido.estado === 'CANCELADO'
+                }">
+            {{ pedido.estado }}
+          </span>
+        </div>
+        <div class="card-body">
+          <p><strong>Fecha:</strong> {{ pedido.fechaPedido | date:'short' }}</p>
+          <p><strong>Total:</strong> ${{ pedido.total | number:'1.2-2' }}</p>
+          <p><strong>Dirección:</strong> {{ pedido.direccionEntrega }}</p>
+          <p><strong>Teléfono:</strong> {{ pedido.telefonoContacto }}</p>
+          
+          <div *ngIf="pedido.detalles && pedido.detalles.length > 0">
+            <h6>Detalles:</h6>
+            <ul>
+              <li *ngFor="let detalle of pedido.detalles">
+                {{ detalle.producto?.nombre }} - Cantidad: {{ detalle.cantidad }} - 
+                Subtotal: ${{ detalle.subtotal | number:'1.2-2' }}
+              </li>
+            </ul>
+          </div>
+          
+          <div class="mt-3">
+            <button class="btn btn-success me-2" 
+                    *ngIf="pedido.estado === 'PENDIENTE'"
+                    (click)="simularPago(pedido.id)">
+              Pagar Pedido
+            </button>
+            <button class="btn btn-danger" 
+                    *ngIf="pedido.estado === 'PENDIENTE' || pedido.estado === 'CONFIRMADO'"
+                    (click)="cancelarPedido(pedido.id)">
+              Cancelar Pedido
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
